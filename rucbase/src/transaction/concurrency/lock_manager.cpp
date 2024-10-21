@@ -98,9 +98,6 @@ bool LockManager::lock_exclusive_on_record(Transaction* txn, const Rid& rid, int
         }
     }
     auto txn_locks = txn->get_lock_set();
-    // if (txn_locks->find(rec_lockID) != txn_locks->end()) {
-    //     return true;
-    // }
     // 3. 检查本事务是否已经持有当前记录的锁，有读锁则升级成写锁
     if (lock_found) {
         lock_it->lock_mode_ = LockMode::EXLUCSIVE;

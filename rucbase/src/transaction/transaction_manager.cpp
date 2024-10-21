@@ -90,10 +90,12 @@ void TransactionManager::abort(Transaction* txn, LogManager* log_manager) {
     auto write_set = txn->get_write_set();
     auto* context = new Context(lock_manager_, log_manager, txn);
     for (auto iter = write_set->rbegin(); iter != write_set->rend(); ++iter) {
-        auto& type = (*iter)->GetWriteType();
-        auto& rid = (*iter)->GetRid();
-        auto buf = (*iter)->GetRecord().data;
-        auto fh = sm_manager_->fhs_.at((*iter)->GetTableName()).get();
+        auto& write_record = *iter;
+        auto& type = write_record->GetWriteType();
+        auto& rid = write_record->GetRid();
+        auto buf = write_record->GetRecord().data;
+        auto fh = sm_manager_->fhs_.at(write_record->GetTableName()).get();
+        // 根据写操作类型执行相应的回滚操作
         switch (type) {
             case WType::INSERT_TUPLE:
                 fh->delete_record(rid, context);
@@ -109,13 +111,12 @@ void TransactionManager::abort(Transaction* txn, LogManager* log_manager) {
     write_set->clear();
     // 2. 释放所有锁
     auto lock_set = txn->get_lock_set();
-    if (!lock_set->empty()) {
-        for (auto it = lock_set->begin(); it != lock_set->end(); it++) {
-            lock_manager_->unlock(txn, *it);
-        }
+    for (auto& lock : *lock_set) {
+        lock_manager_->unlock(txn, lock);
     }
-    lock_set->clear();
+    lock_set->clear();  // 清空锁集合
     // 3. 清空事务相关资源，eg.锁集
+
     // 4. 把事务日志刷入磁盘中
     log_manager->flush_log_to_disk();
     // 5. 更新事务状态

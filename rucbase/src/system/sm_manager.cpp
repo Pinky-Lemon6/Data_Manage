@@ -71,27 +71,44 @@ void SmManager::create_db(const std::string& db_name) {
  * @param {string&} db_name 数据库名称，与文件夹同名
  */
 void SmManager::drop_db(const std::string& db_name) {
+    // ! dbj1013 TODO
+    // 1. 检查数据库是否存在，若不存在抛出错误
     if (!is_dir(db_name)) {
         throw DatabaseNotFoundError(db_name);
     }
+    
+    // 2. 进入数据库文件夹
     if (chdir(db_name.c_str()) < 0) {
         throw UnixError();
     }
-    std::ifstream ofs(DB_META_NAME);
-    ofs >> db_;
-    for (auto table = db_.tabs_.begin(); table != db_.tabs_.end(); table++) {
-        std::string tab_name = table->first;
-        fhs_.erase(table->first);
+    
+    // 3. 删除元数据文件和日志文件
+    rm_manager_->destroy_file(DB_META_NAME);
+    rm_manager_->destroy_file(LOG_FILE_NAME);
 
-        TabMeta tab_meta = table->second;
-        for (auto index : tab_meta.indexes) {
-            ihs_.erase(table->first);
-        }
+    // if (remove(LOG_FILE_NAME.c_str()) != 0) {
+    //     throw UnixError();
+    // }
+    
+    // 4. 删除所有表文件和索引文件
+    for (auto table = db_.tabs_.begin(); table != db_.tabs_.end(); table++) {
+        drop_table(table->first, nullptr);
     }
-    std::string cmd = "rm -r \"" + db_name + "\"";
+    
+    // 5. 回到上级目录
+    if (chdir("..") < 0) {
+        throw UnixError();
+    }
+    
+    // 6. 删除数据库目录
+    std::string cmd = "rm -r " + db_name;
     if (system(cmd.c_str()) < 0) {
         throw UnixError();
     }
+    
+    // 7. 清空内存中的数据库信息
+    db_.name_ = "";
+    db_.tabs_.clear();
 }
 
 /**
