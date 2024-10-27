@@ -1,5 +1,5 @@
 import json
-# import pygraphviz as pgv
+import pygraphviz as pgv
 import os
 import re
 import ast
@@ -287,9 +287,9 @@ class ERDiagramGenerator:
         entity_list, entity_dict, associations = self.analysis_model_output(ret)
         
         # 画图
-        # self.create_er_graph(
-        #     entity_list, entity_dict, associations, self.output_dir, self.output_name
-        # )
+        self.create_er_graph(
+            entity_list, entity_dict, associations, self.output_dir, self.output_name
+        )
         # 结果修正
         dic ={
             "entity_list": entity_list,
@@ -308,9 +308,9 @@ class ERDiagramGenerator:
         entity_dict = dic["entity_dict"]
         associations = dic["associations"]
         # 画图
-        # self.create_er_graph(
-        #     entity_list, entity_dict, associations, self.output_dir, self.output_name
-        # )
+        self.create_er_graph(
+            entity_list, entity_dict, associations, self.output_dir, self.output_name
+        )
 
 
 if __name__ == "__main__":
