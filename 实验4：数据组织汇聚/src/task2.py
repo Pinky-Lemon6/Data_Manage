@@ -1,3 +1,4 @@
+import json
 import pygraphviz as pgv
 import os
 import re
@@ -224,6 +225,7 @@ class ERDiagramGenerator:
         
         
         return entity_list, entity_dict, associations
+    
 
     def create_er_graph(
         self, entity_list, entity_dict, associations, output_dir, output_name
@@ -283,6 +285,28 @@ class ERDiagramGenerator:
         ret = self.get_LLM_response(q)
         # 解析结果
         entity_list, entity_dict, associations = self.analysis_model_output(ret)
+        
+        # 画图
+        self.create_er_graph(
+            entity_list, entity_dict, associations, self.output_dir, self.output_name
+        )
+        # 结果修正
+        dic ={
+            "entity_list": entity_list,
+            "entity_dict": entity_dict,
+            "associations": associations
+            }
+        # 将dic保存在JSON中
+        with open(f"{self.output_dir}\{'analysis'}.json", "w",encoding="utf-8") as f:
+            json.dump(dic, f,ensure_ascii=False)
+ 
+        input("press enter to continue...")
+        # 重新从dic中读取
+        with open(f"{self.output_dir}\{'analysis'}.json", "r") as f:
+            dic = json.load(f)
+        entity_list = dic["entity_list"]
+        entity_dict = dic["entity_dict"]
+        associations = dic["associations"]
         # 画图
         self.create_er_graph(
             entity_list, entity_dict, associations, self.output_dir, self.output_name
