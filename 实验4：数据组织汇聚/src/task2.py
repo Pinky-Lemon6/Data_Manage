@@ -291,75 +291,70 @@ class ERDiagramGenerator:
 
 if __name__ == "__main__":
     # 测试
-    while(1):
-        time.sleep(60)
-        print("*"*100)
-        print("*"*100)
-        print("*"*100)
-        content = """现在有这样的一系列数据集，格式如下：
-            门诊数据表 (`OutpatientData`)
-            | 属性名          | 数据类型   | 示例数据             |
-            |-----------------|------------|----------------------|
-            | 医院名          | TEXT    | 医院A              |
-            | 门诊ID          | VARCHAR    | OP12345              |
-            | 病患姓名          | VARCHAR    | 张晓明               |
-            | 病患身份证号    | VARCHAR    | 430221 19930809 8118 |
-            | 就诊日期        | DATE       | 2023-06-15           |
-            | 就诊时间        | TIME       | 20:33           |
-            | 就诊科室            | VARCHAR    | 内科                 |
-            | 诊断结果            | VARCHAR    | 上呼吸道感染         |
-            | 医生ID          | VARCHAR    | D001                 |
-            | 医生姓名      | VARCHAR    | 王萧                 |
-            | 处方信息        | TEXT       | 阿莫西林 500mg*3天   |
-            | 诊疗费用        | DECIMAL    | 150.00               |
+    content = """现在有这样的一系列数据集，格式如下：
+        门诊数据表 (`OutpatientData`)
+        | 属性名          | 数据类型   | 示例数据             |
+        |-----------------|------------|----------------------|
+        | 医院名          | TEXT    | 医院A              |
+        | 门诊ID          | VARCHAR    | OP12345              |
+        | 病患姓名          | VARCHAR    | 张晓明               |
+        | 病患身份证号    | VARCHAR    | 430221 19930809 8118 |
+        | 就诊日期        | DATE       | 2023-06-15           |
+        | 就诊时间        | TIME       | 20:33           |
+        | 就诊科室            | VARCHAR    | 内科                 |
+        | 诊断结果            | VARCHAR    | 上呼吸道感染         |
+        | 医生ID          | VARCHAR    | D001                 |
+        | 医生姓名      | VARCHAR    | 王萧                 |
+        | 处方信息        | TEXT       | 阿莫西林 500mg*3天   |
+        | 诊疗费用        | DECIMAL    | 150.00               |
 
-            住院数据表 (`InpatientData`)
-            | 属性名          | 数据类型   | 示例数据             |
-            |-----------------|------------|----------------------|
-            | 医院名          | TEXT    | 医院A              |
-            | 住院ID          | VARCHAR    | IP12345              |
-            | 病患姓名          | VARCHAR    | 张晓明               |
-            | 病患身份证号          | VARCHAR    | 430221 19930809 8118 |
-            | 入院日期        | DATE       | 2023-06-10           |
-            | 出院日期        | DATE       | 2023-06-20           |
-            | 住院时间        | INT       | 10           |
-            | 诊断结果            | VARCHAR    | 肺炎                 |
-            | 负责科室            | VARCHAR    | 内科                 |
-            | 医生ID      | VARCHAR    | D002                 |
-            | 医生姓名      | VARCHAR    | 王萧                 |
-            | 住院费用        | DECIMAL    | 5000.00              |
+        住院数据表 (`InpatientData`)
+        | 属性名          | 数据类型   | 示例数据             |
+        |-----------------|------------|----------------------|
+        | 医院名          | TEXT    | 医院A              |
+        | 住院ID          | VARCHAR    | IP12345              |
+        | 病患姓名          | VARCHAR    | 张晓明               |
+        | 病患身份证号          | VARCHAR    | 430221 19930809 8118 |
+        | 入院日期        | DATE       | 2023-06-10           |
+        | 出院日期        | DATE       | 2023-06-20           |
+        | 住院时间        | INT       | 10           |
+        | 诊断结果            | VARCHAR    | 肺炎                 |
+        | 负责科室            | VARCHAR    | 内科                 |
+        | 医生ID      | VARCHAR    | D002                 |
+        | 医生姓名      | VARCHAR    | 王萧                 |
+        | 住院费用        | DECIMAL    | 5000.00              |
 
-            检查数据表 (`ExaminationData`)
-            | 属性名          | 数据类型   | 示例数据             |
-            |-----------------|------------|----------------------|
-            | 医院名          | TEXT    | 医院A              |
-            | 检查ID          | VARCHAR    | EX12345              |
-            | 病患姓名          | VARCHAR    | 张晓明               |
-            | 病患身份证号    | VARCHAR    | 430221 19930809 8118 |
-            | 日期        | DATE       | 2023-06-12           |
-            | 时间        | TIME       | 20:33           |
-            | 类型        | VARCHAR    | 血液检查             |
-            | 费用        | DECIMAL    | 50.00              |
-            | 医生ID      | VARCHAR    | D002                 |
-            | 医生姓名      | VARCHAR    | 王萧                 |
+        检查数据表 (`ExaminationData`)
+        | 属性名          | 数据类型   | 示例数据             |
+        |-----------------|------------|----------------------|
+        | 医院名          | TEXT    | 医院A              |
+        | 检查ID          | VARCHAR    | EX12345              |
+        | 病患姓名          | VARCHAR    | 张晓明               |
+        | 病患身份证号    | VARCHAR    | 430221 19930809 8118 |
+        | 日期        | DATE       | 2023-06-12           |
+        | 时间        | TIME       | 20:33           |
+        | 类型        | VARCHAR    | 血液检查             |
+        | 费用        | DECIMAL    | 50.00              |
+        | 医生ID      | VARCHAR    | D002                 |
+        | 医生姓名      | VARCHAR    | 王萧                 |
 
-            费用数据表 (`ExpenseData`)
-            | 属性名          | 数据类型   | 示例数据             |
-            |-----------------|------------|----------------------|
-            | 医院名          | TEXT    | 医院A              |
-            | 费用ID          | VARCHAR    | EXP12345             |
-            | 患者姓名          | VARCHAR    | 张晓明               |
-            | 患者身份证号          | VARCHAR    | 430221 19930809 8118 |
-            | 缴费日期        | DATE       | 2023-06-15           |
-            | 缴费时间        | TIME       | 20:33           |
-            | 费用类型        | VARCHAR    | 药品费               |
-            | 金额            | DECIMAL    | 100.00               |
-            | 医生ID      | VARCHAR    | D002                 |
-            
-            请你自己根据以上数据表的信息，帮我生成实体的属性数据以及实体间的联系，要求尽可能详细。"""
-        output_dir = "..\output"
-        output_name = "test"
-        worker = ERDiagramGenerator(
-            content=content, output_dir=output_dir, output_name=output_name
-        )
-        worker.work()
+        费用数据表 (`ExpenseData`)
+        | 属性名          | 数据类型   | 示例数据             |
+        |-----------------|------------|----------------------|
+        | 医院名          | TEXT    | 医院A              |
+        | 费用ID          | VARCHAR    | EXP12345             |
+        | 患者姓名          | VARCHAR    | 张晓明               |
+        | 患者身份证号          | VARCHAR    | 430221 19930809 8118 |
+        | 缴费日期        | DATE       | 2023-06-15           |
+        | 缴费时间        | TIME       | 20:33           |
+        | 费用类型        | VARCHAR    | 药品费               |
+        | 金额            | DECIMAL    | 100.00               |
+        | 医生ID      | VARCHAR    | D002                 |
+        
+        请你自己根据以上数据表的信息，帮我生成实体的属性数据以及实体间的联系，要求尽可能详细。"""
+    output_dir = "..\output"
+    output_name = "test"
+    worker = ERDiagramGenerator(
+        content=content, output_dir=output_dir, output_name=output_name
+    )
+    worker.work()
