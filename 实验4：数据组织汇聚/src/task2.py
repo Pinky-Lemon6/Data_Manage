@@ -1,3 +1,5 @@
+# TODO: 将大模型的输出结果提取出来的三个东西储存到一个txt文件
+# TODO：对txt文件纠错->再调用绘图函数
 import pygraphviz as pgv
 import os
 import re
